@@ -12,7 +12,7 @@
     </div>
 
     <div>
-        <label>商品名:</label>
+        <label>商品名 <span style="color:red;">*</span></label>
         <input type="text" name="product_name" value="{{ old('product_name', $product->product_name) }}">
         @if($errors->has('product_name'))
             <p>{{ $errors->first('product_name') }}</p>
@@ -20,7 +20,7 @@
     </div>
 
     <div>
-        <label>メーカー:</label>
+        <label>メーカー名 <span style="color:red;">*</span></label>
         <select name="company_id">
             @foreach ($companies as $company)
                 <option value="{{ $company->id }}" {{ $company->id == $product->company_id ? 'selected' : '' }}>
@@ -34,7 +34,7 @@
     </div>
 
     <div>
-        <label>価格:</label>
+        <label>価格 <span style="color:red;">*</span></label>
         <input type="number" name="price" value="{{ old('price', $product->price) }}">
         @if($errors->has('price'))
             <p>{{ $errors->first('price') }}</p>
@@ -42,7 +42,7 @@
     </div>
 
     <div>
-        <label>在庫数:</label>
+        <label>在庫数 <span style="color:red;">*</span></label>
         <input type="number" name="stock" value="{{ old('stock', $product->stock) }}">
         @if($errors->has('stock'))
             <p>{{ $errors->first('stock') }}</p>

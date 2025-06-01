@@ -7,24 +7,25 @@
     @csrf
 
     <div class="form-group">
-        <label for="product_name">商品名</label>
+        <label for="product_name">商品名 <span style="color:red;">*</span></label>
         <input type="text" class="form-control" id="product_name" name="product_name" placeholder="商品名">
         @if($errors->has('product_name'))
             <p>{{ $errors->first('product_name') }}</p>
         @endif
     </div>
 
-    <select name="company_id">
-        @foreach ($companies as $company)
-            <option value="{{ $company->id }}">{{ $company->company_name }}</option>
-        @endforeach
-        @if($errors->has('company_id'))
-            <p>{{ $errors->first('company_id') }}</p>
-        @endif
-    </select>
+    <label for="company_name">メーカー名 <span style="color:red;">*</span></label>
+        <select name="company_id">
+            @foreach ($companies as $company)
+                <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+            @endforeach
+            @if($errors->has('company_id'))
+                <p>{{ $errors->first('company_id') }}</p>
+            @endif
+        </select>
 
     <div class="form-group">
-        <label for="price">価格</label>
+        <label for="price">価格 <span style="color:red;">*</span></label>
         <input type="text" class="form-control" id="price" name="price" placeholder="価格">
         @if($errors->has('price'))
             <p>{{ $errors->first('price') }}</p>
@@ -32,7 +33,7 @@
     </div>
 
     <div class="form-group">
-        <label for="stock">在庫数</label>
+        <label for="stock">在庫数 <span style="color:red;">*</span></label>
         <input type="text" class="form-control" id="stock" name="stock" placeholder="在庫数">
         @if($errors->has('stock'))
             <p>{{ $errors->first('stock') }}</p>
