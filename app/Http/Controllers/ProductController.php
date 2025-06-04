@@ -11,56 +11,33 @@ use App\Http\Requests\productRequest;
 class ProductController extends Controller
 {
     public function index(Request $request){
+
         $keyword = $request->input('keyword');
         $maker = $request->input('maker');
 
-        $query = DB::table('products')
-            ->join('companies', 'products.company_id', '=', 'companies.id')
-            ->select(
-                'products.*',
-                'companies.company_name'
-            );
+        $ProductModel = new Product();
+        $products = $ProductModel->indexGetList($keyword, $maker);
+        $CompanyModel = new Company();
+        $companies = $CompanyModel->getList();
 
-        if (!empty($keyword)) {
-            $query->where('products.product_name', 'like', '%' . $keyword . '%');
-        }
-
-        if (!empty($maker)) {
-            $query->where('companies.company_name', 'like', '%' . $maker . '%');
-        }
-
-        $products = $query->get();
-
-        return view('products.index', ['products' => $products]);
+        return view('products.index', [
+            'products' => $products,
+            'companies' => $companies, 
+        ]);
     }
 
     public function show($id) {
-        $product = DB::table('products')
-            ->join('companies', 'products.company_id', '=', 'companies.id')
-            ->select(
-                'products.*',
-                'companies.company_name'
-            )
-            ->where('products.id', $id)
-            ->first(); 
-    
-        if (!$product) {
-            abort(404); 
-        }
-    
+        $ProductModel = new Product();
+        $product = $ProductModel->showGetList($id);
+
         return view('products.show', ['product' => $product]);
     }
 
     public function edit($id) {
-        $product = DB::table('products')
-            ->where('id', $id)
-            ->first();
-    
-        if (!$product) {
-            abort(404); 
-        }
-
-        $companies = DB::table('companies')->get(); 
+        $ProductModel = new Product();
+        $product = $ProductModel->editGetList($id);
+        $CompanyModel = new Company();
+        $companies = $CompanyModel->getList();
 
         return view('products.edit', [
             'product' => $product,
@@ -69,19 +46,15 @@ class ProductController extends Controller
     }
 
     public function destroy($id) {
-        $product = DB::table('products')->where('id', $id)->first();
-    
-        if (!$product) {
-            abort(404);
-        }
-    
-        DB::table('products')->where('id', $id)->delete();
-    
+        $ProductModel = new Product();
+        $ProductModel->destroyGetList($id);
+
         return redirect()->route('products.index')->with('success', '商品を削除しました');
     }
 
     public function create() {
-        $companies = DB::table('companies')->get(); 
+        $CompanyModel = new Company();
+        $companies = $CompanyModel->getList();
         return view('products.create', ['companies' => $companies]);
     }
 

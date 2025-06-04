@@ -6,7 +6,14 @@
 
     <form method="GET" action="{{ route('products.index') }}">
         <input type="text" name="keyword" placeholder="商品名で検索" value="{{ request('keyword') }}">
-        <input type="text" name="maker" placeholder="メーカー名で検索" value="{{ request('maker') }}">
+        <select name="maker">
+            <option value="">-- メーカーを選択 --</option>
+            @foreach($companies as $company)
+                <option value="{{ $company->company_name }}" {{ request('maker') == $company->company_name ? 'selected' : '' }}>
+                    {{ $company->company_name }}
+                </option>
+            @endforeach
+        </select>
         <button type="submit">検索</button>
     </form>
 
@@ -57,4 +64,4 @@
     </table>
 
 </div>
-
+@endsection
