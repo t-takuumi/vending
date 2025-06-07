@@ -46,8 +46,17 @@ class ProductController extends Controller
     }
 
     public function destroy($id) {
-        $ProductModel = new Product();
-        $ProductModel->destroyGetList($id);
+        DB::beginTransaction();
+
+        try {
+            $ProductModel = new Product();
+            $ProductModel->destroyGetList($id);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e->getMessage());
+            return back();
+        }
 
         return redirect()->route('products.index')->with('success', '商品を削除しました');
     }
