@@ -36,3 +36,4 @@ Route::delete('/products/{id}', [App\Http\Controllers\ProductController::class, 
 Route::put('/products/{id}', [App\Http\Controllers\ProductController::class, 'update'])->name('products.update');
 
 Route::post('/products', [App\Http\Controllers\ProductController::class, 'productSubmit'])->name('submit');
+

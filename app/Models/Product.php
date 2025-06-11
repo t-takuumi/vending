@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
-    public function indexGetList($keyword, $maker) {
+    public function indexGetList($keyword, $maker, $priceMin, $priceMax, $stockMin, $stockMax) {
         $query = DB::table('products')
             ->join('companies', 'products.company_id', '=', 'companies.id')
             ->select(
@@ -21,6 +21,22 @@ class Product extends Model
 
         if (!empty($maker)) {
             $query->where('companies.company_name', 'like', '%' . $maker . '%');
+        }
+
+        if (!is_null($priceMin)) {
+            $query->where('products.price', '>=', $priceMin);
+        }
+    
+        if (!is_null($priceMax)) {
+            $query->where('products.price', '<=', $priceMax);
+        }
+    
+        if (!is_null($stockMin)) {
+            $query->where('products.stock', '>=', $stockMin);
+        }
+    
+        if (!is_null($stockMax)) {
+            $query->where('products.stock', '<=', $stockMax);
         }
 
         return $query->get();

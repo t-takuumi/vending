@@ -14,11 +14,21 @@ class ProductController extends Controller
 
         $keyword = $request->input('keyword');
         $maker = $request->input('maker');
+        $priceMin  = $request->input('price_min');
+        $priceMax  = $request->input('price_max');
+        $stockMin  = $request->input('stock_min');
+        $stockMax  = $request->input('stock_max');
 
         $ProductModel = new Product();
-        $products = $ProductModel->indexGetList($keyword, $maker);
+        $products = $ProductModel->indexGetList($keyword, $maker, $priceMin, $priceMax, $stockMin, $stockMax);
         $CompanyModel = new Company();
         $companies = $CompanyModel->getList();
+
+            // 通常リクエスト or Ajax判定
+        if ($request->ajax()) {
+            $html = view('products.table', compact('products'))->render();
+            return response()->json(['html' => $html]);
+        }
 
         return view('products.index', [
             'products' => $products,
@@ -52,6 +62,11 @@ class ProductController extends Controller
             $ProductModel = new Product();
             $ProductModel->destroyGetList($id);
             DB::commit();
+
+            if (request()->ajax()) {
+                return response()->json(['success' => true]);
+            }
+            
         } catch (\Exception $e) {
             DB::rollback();
             dd($e->getMessage());
@@ -117,6 +132,7 @@ class ProductController extends Controller
         }
         return redirect()->route('products.index')->with('success', '商品を更新しました');
     }
+
 
 }
 
