@@ -50,6 +50,10 @@
                 data: $(this).serialize(),
                 success: function (response) {
                     $('#product-table').html(response.html);
+
+                    $("#product-list-table").tablesorter({
+                        sortList: [[0,1]]
+                    });
                 },
                 error: function () {
                     alert('検索に失敗しました');
